@@ -1,0 +1,7 @@
+<view class="container">
+    <image class="user-jobs" src="/images/jobs.jpg"></image>
+    <text class="user-name"><text  class="user-name" style="color:red">Hello!</text>,Homosapiens!</text>
+    <view class="moto-container" bindtap="onTap">
+        <text class="moto">开启小程序之旅</text>
+    </view>
+</view>

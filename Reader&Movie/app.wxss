@@ -1,0 +1,4 @@
+text{
+    font-family: Microsoft Yahei;
+       font-size: 24rpx; /*不单独设置，都会继承app.wxss下的font-size*/
+}
