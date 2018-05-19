@@ -1,8 +1,10 @@
 var postsData = require('../../../data/posts-data.js')
+var app = getApp();         //获取app.js内定义的全局变量
 Page({
     data: {
         isPlayingMusic: false
     },
+
     onLoad: function (option) {
         var postId = option.id;
         this.data.currentPostId = postId;    //1.中转获取postId
@@ -40,18 +42,53 @@ Page({
             wx.setStorageSync('posts_collected', postsCollected);
         }
 
-        var that = this;
-        wx.onBackgroundAudioPlay(function(){
-            that.setData({
-                isPlayingMusic : true
+        if (app.globalData.g_isPlayingMusic && app.globalData.g_currentMusicPostId === postId) {//增加判断当前播放的音乐是否为此页面的音乐判断
+            this.setData({
+                isPlayingMusic: true
             })
+        }
+        this.setMusicMonitor();
+    },
+
+    setMusicMonitor: function () {
+        var that = this;
+        wx.onBackgroundAudioPlay(function (event) {
+            var pages = getCurrentPages();
+            var currentPage = pages[pages.length - 1];
+            if (currentPage.data.currentPostId === that.data.currentPostId) {
+                //打开多个post-detail页面后，每个页面不会关闭，只会隐藏。通过页面栈拿到到
+                //当前页面的postid，只处理当前页面的音乐播放。
+                if (app.globalData.g_currentMusicPostId == that.data.currentPostId) {
+                    //播放当前页边才改变图标
+                    that.setData({
+                        isPlayingMusic: true
+                    })
+                }
+
+            }
+
+            app.globalData.g_isPlayingMusic = true; //全局变量设置
+            // app.globalData.g_currentMusicPostId = that.data.currentPostId;
         });
         wx.onBackgroundAudioPause(function () {
-            that.setData({
-                isPlayingMusic : false
-            })
+            var pages = getCurrentPages();
+            var currentPage = pages[pages.length - 1];
+            if (currentPage.data.currentPostId === that.data.currentPostId) {
+                if (app.globalData.g_currentMusicPostId == that.data.currentPostId) {
+                    that.setData({
+                        isPlayingMusic: false
+                    })
+                }
+            }
+            app.globalData.g_isPlayingMusic = false;
         });
 
+        wx.onBackgroundAudioStop(function () {
+            that.setData({
+                isPlayingMusic: false
+            })
+            app.globalData.g_isPlayingMusic = false;
+        });
     },
 
     onCollectionTap: function (event) {
@@ -154,6 +191,7 @@ Page({
             this.setData({
                 isPlayingMusic: false
             })
+            app.globalData.g_isPlayingMusic = false;
         }
         else {
             wx.playBackgroundAudio({
@@ -165,5 +203,7 @@ Page({
                 isPlayingMusic: true
             })
         }
+        app.globalData.g_currentPostId = this.data.currentPostId;
+        app.globalData.g_isPlayingMusic = true;
     }
 })
