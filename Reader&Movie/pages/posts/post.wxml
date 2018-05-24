@@ -1,14 +1,14 @@
 <import src="post-item/post-item-template.wxml" />
 <view>
-    <swiper indicator-dots='true' autoplay='true' interval='5000'>
+    <swiper catchtap="onSwiperTap" vertical="{{false}}" indicator-dots='true' autoplay='true' interval='5000'>
         <swiper-item >
-            <image src="/images/energy.jpg" ></image>
+            <image src="/images/post/Interstellar.jpg" data-postId="3"></image>
         </swiper-item>
         <swiper-item >
-            <image src="/images/universe.jpg" ></image>
+            <image src="/images/post/Millionares.jpg" data-postId="4"></image>
         </swiper-item>
         <swiper-item >
-            <image src="/images/tesla.jpg" ></image>
+            <image src="/images/post/Shawshank.jpg" data-postId="5"></image>
         </swiper-item>
     </swiper>
 
