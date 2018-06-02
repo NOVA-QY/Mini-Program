@@ -4,4 +4,5 @@
     <view class="moto-container" bindtap="onTap">
         <text class="moto">开启小程序之旅</text>
     </view>
+    
 </view>
