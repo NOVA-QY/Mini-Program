@@ -18,6 +18,14 @@ Page({
 
     },
 
+    // 更多分页跳转
+    onMoreTap:function(event){
+        var category = event.currentTarget.dataset.category;
+        wx.navigateTo({
+            url:"more-movie/more-movie?category="+category
+        })
+    },
+
 // 获取豆瓣的数据
     getMovieListData: function (url,settedKey,categoryTitle) {
         var that = this;
@@ -28,10 +36,11 @@ Page({
                 "content-type": "json"
             },
             success: function (res) {
-                console.log(res);
                 that.processDoubanData(res.data,settedKey,categoryTitle)
             },
-            fail: function () {
+            fail: function (error) {
+                //fail
+                console.log(error)
             },
         })
     },
